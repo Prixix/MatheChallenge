@@ -3,6 +3,7 @@ package com.prixix.mathechallenge;
 import com.prixix.mathechallenge.commands.RestartCommand;
 import com.prixix.mathechallenge.commands.TimerCommand;
 import com.prixix.mathechallenge.listeners.PlayerJoinListener;
+import com.prixix.mathechallenge.listeners.PlayerLeaveListener;
 import com.prixix.mathechallenge.timer.Timer;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -56,5 +57,6 @@ public final class MatheChallenge extends JavaPlugin {
 
     private void registerListeners() {
         pluginManager.registerEvents(new PlayerJoinListener(this), this);
+        pluginManager.registerEvents(new PlayerLeaveListener(this), this);
     }
 }
