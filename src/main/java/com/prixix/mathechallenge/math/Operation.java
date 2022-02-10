@@ -17,6 +17,16 @@ public enum Operation {
         };
     }
 
+    public char getOperationSymbol() {
+        return switch (this) {
+            case PLUS -> '+';
+            case MINUS -> '-';
+            case MULTIPLY -> '*';
+            case DIVIDE -> '/';
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        };
+    }
+
     public static Operation getOperationByCode(int code) {
         return switch (code) {
             case 0 -> PLUS;
@@ -26,7 +36,5 @@ public enum Operation {
             default -> throw new IllegalStateException("Unexpected value: " + code);
         };
     }
-
-
 
 }

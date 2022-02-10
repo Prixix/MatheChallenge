@@ -48,7 +48,7 @@ public class Timer {
         }, 0, 20);
     }
 
-    private String getFormattedTime(long seconds) {
+    public String getFormattedTime(long seconds) {
         long minutes = seconds / 60;
         long secondsLeft = seconds % 60;
 

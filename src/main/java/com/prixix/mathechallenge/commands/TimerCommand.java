@@ -32,6 +32,7 @@ public class TimerCommand implements CommandExecutor {
             case "start" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
                     sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer läuft bereits!");
+                    plugin.runChallenge();
                     break;
                 }
                 timer.setState(Timer.State.RUNNING);
@@ -48,6 +49,7 @@ public class TimerCommand implements CommandExecutor {
             case "resume" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
                     sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer läuft bereits!");
+                    plugin.runChallenge();
                     break;
                 }
                 timer.setState(Timer.State.RUNNING);
@@ -56,6 +58,7 @@ public class TimerCommand implements CommandExecutor {
             case "reset" -> {
                 timer.setTime(0);
                 sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde zurückgesetzt!");
+                break;
             }
             default -> sender.sendMessage(MatheChallenge.PREFIX + "§cBitte nutze§7: §9/timer <start|pause|reset|resume>");
         }
