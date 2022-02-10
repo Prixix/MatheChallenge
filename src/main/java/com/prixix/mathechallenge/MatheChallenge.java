@@ -5,9 +5,11 @@ import com.prixix.mathechallenge.commands.TimerCommand;
 import com.prixix.mathechallenge.listeners.PlayerJoinListener;
 import com.prixix.mathechallenge.timer.Timer;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,10 +21,12 @@ public final class MatheChallenge extends JavaPlugin {
     private Logger logger;
     @Getter
     private Timer timer;
+    @Getter
+    private ArrayList<Player> players;
 
     private PluginManager pluginManager;
 
-    public static final String prefix = "§8[§6MatheChallenge§8] §7";
+    public static final String PREFIX = "§8[§6MatheChallenge§8] §7";
 
     @Override
     public void onEnable() {
@@ -31,17 +35,18 @@ public final class MatheChallenge extends JavaPlugin {
         logger = this.getLogger();
         pluginManager = this.getServer().getPluginManager();
         timer = new Timer(Timer.State.STOPPED, 0);
+        players = new ArrayList<>();
 
         registerCommands();
         registerListeners();
 
-        logger.log(Level.INFO, prefix + "Das Plugin wurde geladen!");
+        logger.log(Level.INFO, PREFIX + "Das Plugin wurde geladen!");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        logger.log(Level.INFO, prefix + "Das Plugin wurde deaktiviert!");
+        logger.log(Level.INFO, PREFIX + "Das Plugin wurde deaktiviert!");
     }
 
     private void registerCommands() {

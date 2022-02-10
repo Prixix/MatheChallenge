@@ -18,6 +18,7 @@ public class PlayerJoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        event.setJoinMessage(MatheChallenge.prefix + "§a" + player.getName() + " §7hat das Spiel betreten.");
+        event.setJoinMessage(MatheChallenge.PREFIX + "§a" + player.getName() + " §7hat das Spiel betreten.");
+        plugin.getPlayers().add(player);
     }
 }

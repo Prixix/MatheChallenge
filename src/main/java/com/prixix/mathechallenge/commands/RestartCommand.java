@@ -16,7 +16,7 @@ public class RestartCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("mathechallenge.restart")) {
-            sender.sendMessage(MatheChallenge.prefix + "§cDu hast keine Rechte dafür!");
+            sender.sendMessage(MatheChallenge.PREFIX + "§cDu hast keine Rechte dafür!");
             return true;
         }
 

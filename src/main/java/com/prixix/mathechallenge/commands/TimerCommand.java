@@ -20,44 +20,44 @@ public class TimerCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if(!sender.hasPermission("mathechallenge.timer")) {
-            sender.sendMessage(MatheChallenge.prefix + "§cDu hast keine Rechte dafür!");
+            sender.sendMessage(MatheChallenge.PREFIX + "§cDu hast keine Rechte dafür!");
             return true;
         }
 
         if(args.length == 0) {
-            sender.sendMessage(MatheChallenge.prefix + "§cBitte nutze§7: §9/timer <start|pause|reset|resume>");
+            sender.sendMessage(MatheChallenge.PREFIX + "§cBitte nutze§7: §9/timer <start|pause|reset|resume>");
         }
 
         switch (args[0]) {
             case "start" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
-                    sender.sendMessage(MatheChallenge.prefix + "§cDer Timer läuft bereits!");
+                    sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer läuft bereits!");
                     break;
                 }
                 timer.setState(Timer.State.RUNNING);
-                sender.sendMessage(MatheChallenge.prefix + "§aDer Timer wurde gestartet!");
+                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde gestartet!");
             }
             case "stop", "pause" -> {
                 if (timer.getState() == Timer.State.STOPPED) {
-                    sender.sendMessage(MatheChallenge.prefix + "§cDer Timer ist bereits gestoppt!");
+                    sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer ist bereits gestoppt!");
                     break;
                 }
                 timer.setState(Timer.State.STOPPED);
-                sender.sendMessage(MatheChallenge.prefix + "§aDer Timer wurde gestoppt!");
+                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde gestoppt!");
             }
             case "resume" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
-                    sender.sendMessage(MatheChallenge.prefix + "§cDer Timer läuft bereits!");
+                    sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer läuft bereits!");
                     break;
                 }
                 timer.setState(Timer.State.RUNNING);
-                sender.sendMessage(MatheChallenge.prefix + "§aDer Timer wurde fortgesetzt!");
+                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde fortgesetzt!");
             }
             case "reset" -> {
                 timer.setTime(0);
-                sender.sendMessage(MatheChallenge.prefix + "§aDer Timer wurde zurückgesetzt!");
+                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde zurückgesetzt!");
             }
-            default -> sender.sendMessage(MatheChallenge.prefix + "§cBitte nutze§7: §9/timer <start|pause|reset|resume>");
+            default -> sender.sendMessage(MatheChallenge.PREFIX + "§cBitte nutze§7: §9/timer <start|pause|reset|resume>");
         }
 
         return false;
