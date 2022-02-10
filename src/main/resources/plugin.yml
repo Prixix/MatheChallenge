@@ -1,0 +1,15 @@
+name: MatheChallenge
+version: '${version}'
+main: com.prixix.mathechallenge.MatheChallenge
+api-version: 1.18
+authors: [ Prixix ]
+
+commands:
+  restart:
+    description: Restart the server
+    usage: /restart
+    permission: mathechallenge.restart
+  timer:
+    description: Control the timer
+    usage: /timer <start|pause|reset|resume>
+    permission: mathechallenge.timer
