@@ -22,12 +22,12 @@ public class TimerCommand implements CommandExecutor {
 
         if(!sender.hasPermission("mathechallenge.timer")) {
             sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Du hast keine Rechte dafür!");
-            return false;
+            return true;
         }
 
         if(args.length == 0) {
             //sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Bitte nutze" + ChatColor.GRAY + ": " + ChatColor.GOLD + "/timer <start|pause|reset|resume>");
-            return true;
+            return false;
         }
 
         switch (args[0]) {
@@ -66,6 +66,6 @@ public class TimerCommand implements CommandExecutor {
             default -> sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Bitte nutze" + ChatColor.GRAY + ": " + ChatColor.GOLD + "/timer <start|pause|reset|resume>");
         }
 
-        return false;
+        return true;
     }
 }

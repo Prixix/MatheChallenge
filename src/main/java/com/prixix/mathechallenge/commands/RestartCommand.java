@@ -18,10 +18,10 @@ public class RestartCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("mathechallenge.restart")) {
             sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Du hast keine Rechte dafür!");
-            return true;
+            return false;
         }
 
         plugin.getServer().shutdown();
-        return false;
+        return true;
     }
 }
