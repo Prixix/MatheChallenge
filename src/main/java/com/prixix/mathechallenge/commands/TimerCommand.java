@@ -33,7 +33,7 @@ public class TimerCommand implements CommandExecutor {
         switch (args[0]) {
             case "start" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
-                    sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Der Timer läuft bereits!");
+                    sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Der Timer l\u00E4uft bereits!");
                     break;
                 }
                 plugin.runChallenge();
@@ -51,7 +51,7 @@ public class TimerCommand implements CommandExecutor {
             }
             case "resume" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
-                    sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Der Timer läuft bereits!");
+                    sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Der Timer l\u00E4uft bereits!");
                     plugin.runChallenge();
                     break;
                 }
