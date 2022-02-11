@@ -8,7 +8,7 @@ import java.util.Random;
 public class Problem {
 
     private static final int DEFAULT_MIN = 2;
-    private static final int DEFAULT_MAX = 10000;
+    private static final int DEFAULT_MAX = 100;
 
     @Getter @Setter
     private int firstNumber;

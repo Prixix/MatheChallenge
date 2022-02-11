@@ -11,12 +11,17 @@ import com.prixix.mathechallenge.timer.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,27 +30,29 @@ public final class MatheChallenge extends JavaPlugin {
     @Getter
     private static MatheChallenge instance;
     @Getter
-    private Logger logger;
-    @Getter
     private Timer timer;
     @Getter
     private ArrayList<Player> players;
+    @Getter
+    private ConsoleCommandSender console;
     @Getter @Setter
     private Player currentPlayer;
     @Getter @Setter
     private Problem currentProblem;
     @Getter
     private int currentTaskId;
+    @Getter
+    private BukkitTask currentTask;
 
     private PluginManager pluginManager;
 
-    public static final String PREFIX = "§8[§6MatheChallenge§8] §7";
+    public static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MatheChallenge" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         instance = this;
-        logger = this.getLogger();
+        console = Bukkit.getConsoleSender();
         pluginManager = this.getServer().getPluginManager();
         timer = new Timer(Timer.State.STOPPED, 0L);
         players = new ArrayList<>();
@@ -53,12 +60,12 @@ public final class MatheChallenge extends JavaPlugin {
         registerCommands();
         registerListeners();
 
-        logger.log(Level.INFO, PREFIX + "Das Plugin wurde geladen!");
+        console.sendMessage(PREFIX + "Das Plugin wurde aktiviert!");
     }
 
     @Override
     public void onDisable() {
-        logger.log(Level.INFO, PREFIX + "Das Plugin wurde deaktiviert!");
+        console.sendMessage(PREFIX + "Das Plugin wurde deaktiviert!");
     }
 
     private void registerCommands() {
@@ -76,45 +83,62 @@ public final class MatheChallenge extends JavaPlugin {
     public void sendLostMessage(Player deadPlayer) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage("");
-            player.sendMessage(MatheChallenge.PREFIX + "§c" + deadPlayer.getName() + " ist gestorben!");
-            player.sendMessage(MatheChallenge.PREFIX + "§aDie Challenge wurde beendet!");
-            player.sendMessage(MatheChallenge.PREFIX + "§aIhr habt §e" + getTimer().getFormattedTime(getTimer().getTime()) + " §aMinuten gebraucht!");
+            player.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + deadPlayer.getName() + " ist gestorben!");
+            player.sendMessage(MatheChallenge.PREFIX + ChatColor.GREEN + "Die Challenge wurde beendet!");
+            player.sendMessage(MatheChallenge.PREFIX + ChatColor.GREEN + "Ihr habt " + ChatColor.YELLOW + getTimer().getFormattedTime(getTimer().getTime()) + ChatColor.GREEN + " Minuten gebraucht!");
             player.sendMessage("");
             player.setGameMode(GameMode.SPECTATOR);
         }
     }
 
     public void runChallenge() {
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            if (timer.getState() == Timer.State.RUNNING) {
-                Player player = players.get((int) Math.abs(players.size() * Math.random()));
-                seconds = 10;
-                startChallengeTimer(player);
-                Problem problem = Problem.generateRandomProblem();
-                player.sendMessage(PREFIX + "§c§lMathematisches Problem: §6" + problem.getFirstNumber() + " " + problem.getOperation().getOperationSymbol() + " " + problem.getSecondNumber() + " = ?");
+        console.sendMessage("Starte Challenge...");
+        console.sendMessage(players.toString());
 
-                currentPlayer = player;
-                currentProblem = problem;
+        // Generate a random long between 30 and 300 seconds
+        //300
+        long randomTime = new Random().nextInt(60 - 30 + 1) + 30;
+
+        console.sendMessage("Random Long: " + randomTime);
+
+        currentTask = Bukkit.getScheduler().runTaskLater(this, () -> {
+            if (timer.getState() == Timer.State.RUNNING && getPlayers().size() > 0) {
+                setCurrentPlayer(players.get(new Random().nextInt(players.size())));
+                seconds = 10;
+                startChallengeTimer();
+                Problem problem = Problem.generateRandomProblem();
+                console.sendMessage(problem.getOperation().operationResult(problem.getFirstNumber(), problem.getSecondNumber()) + " = ?");
+                currentPlayer.sendMessage(PREFIX + ChatColor.RED + ChatColor.BOLD + "Mathematisches Problem: " + ChatColor.GOLD + problem.getFirstNumber() + " " + problem.getOperation().getOperationSymbol() + " " + problem.getSecondNumber() + " = ?");
+
+                setCurrentProblem(problem);
 
                 for(Player p : players) {
-                    p.sendTitle("§a" + player.getName() + " §7muss ein Problem lösen!", "", 10, 20, 10);
+                    p.sendTitle(ChatColor.GREEN + currentPlayer.getName() + ChatColor.GRAY + " muss ein Problem l\\u00F6sen!", "", 10, 20, 10);
+                    p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
                 }
             }
-        }, (long) (Math.random() * (3 * 60 * 20)));
+        }, randomTime * 20L);
     }
 
     int seconds = 10;
-    public void startChallengeTimer(Player player) {
+    public void startChallengeTimer() {
         currentTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             if (seconds > 0) {
-                player.sendTitle("§a" + seconds + " §7Sekunden verbleiben!", "", 10, 20, 10);
-            } else {
-                sendLostMessage(player);
                 for(Player p : players) {
-                    p.setHealth(0.0);
+                    p.sendTitle(ChatColor.GREEN + "" + seconds + ChatColor.GRAY + " Sekunden verbleiben!", "", 10, 20, 10);
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1F);
                 }
+            } else {
+                for(Player p : players) {
+                    p.setHealth(1);
+                    p.sendTitle(ChatColor.RED + "Das Problem wurde nicht gel\\u00F6st!", "", 10, 20, 10);
+                    p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1F, 1F);
+                }
+                runChallenge();
+                Bukkit.getScheduler().cancelTask(currentTaskId);
             }
             seconds--;
         }, 0L, 20L);
+        seconds = 10;
     }
 }

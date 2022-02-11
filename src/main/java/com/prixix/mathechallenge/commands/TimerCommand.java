@@ -2,6 +2,7 @@ package com.prixix.mathechallenge.commands;
 
 import com.prixix.mathechallenge.MatheChallenge;
 import com.prixix.mathechallenge.timer.Timer;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,47 +21,49 @@ public class TimerCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if(!sender.hasPermission("mathechallenge.timer")) {
-            sender.sendMessage(MatheChallenge.PREFIX + "§cDu hast keine Rechte dafür!");
-            return true;
+            sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Du hast keine Rechte dafür!");
+            return false;
         }
 
         if(args.length == 0) {
-            sender.sendMessage(MatheChallenge.PREFIX + "§cBitte nutze§7: §9/timer <start|pause|reset|resume>");
+            //sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Bitte nutze" + ChatColor.GRAY + ": " + ChatColor.GOLD + "/timer <start|pause|reset|resume>");
+            return true;
         }
 
         switch (args[0]) {
             case "start" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
-                    sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer läuft bereits!");
-                    plugin.runChallenge();
+                    sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Der Timer läuft bereits!");
                     break;
                 }
+                plugin.runChallenge();
                 timer.setState(Timer.State.RUNNING);
-                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde gestartet!");
+                sender.sendMessage(MatheChallenge.PREFIX + ChatColor.GREEN + "Der Timer wurde gestartet!");
             }
             case "stop", "pause" -> {
-                if (timer.getState() == Timer.State.STOPPED) {
-                    sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer ist bereits gestoppt!");
+                if (timer.getState() == Timer.State.PAUSED) {
+                    sender.sendMessage(MatheChallenge.PREFIX + ChatColor.GREEN + "Der Timer ist bereits gestoppt!");
                     break;
                 }
-                timer.setState(Timer.State.STOPPED);
-                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde gestoppt!");
+                timer.setState(Timer.State.PAUSED);
+                sender.sendMessage(MatheChallenge.PREFIX + ChatColor.GREEN + "Der Timer wurde gestoppt!");
+                plugin.getCurrentTask().cancel();
             }
             case "resume" -> {
                 if (timer.getState() == Timer.State.RUNNING) {
-                    sender.sendMessage(MatheChallenge.PREFIX + "§cDer Timer läuft bereits!");
+                    sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Der Timer läuft bereits!");
                     plugin.runChallenge();
                     break;
                 }
                 timer.setState(Timer.State.RUNNING);
-                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde fortgesetzt!");
+                sender.sendMessage(MatheChallenge.PREFIX + ChatColor.GREEN + "Der Timer wurde fortgesetzt!");
             }
             case "reset" -> {
                 timer.setTime(0);
-                sender.sendMessage(MatheChallenge.PREFIX + "§aDer Timer wurde zurückgesetzt!");
+                sender.sendMessage(MatheChallenge.PREFIX + ChatColor.GREEN + "Der Timer wurde zurückgesetzt!");
                 break;
             }
-            default -> sender.sendMessage(MatheChallenge.PREFIX + "§cBitte nutze§7: §9/timer <start|pause|reset|resume>");
+            default -> sender.sendMessage(MatheChallenge.PREFIX + ChatColor.RED + "Bitte nutze" + ChatColor.GRAY + ": " + ChatColor.GOLD + "/timer <start|pause|reset|resume>");
         }
 
         return false;

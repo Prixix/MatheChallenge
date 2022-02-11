@@ -6,6 +6,7 @@ import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Timer {
@@ -24,15 +25,15 @@ public class Timer {
     public void sendActionBar() {
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(state == State.STOPPED) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§4§lDer Timer ist gestoppt!"));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Der Timer ist gestoppt!"));
                 return;
             }
             if(state == State.PAUSED) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c§lDer Timer ist pausiert!"));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "" + ChatColor.BOLD + "Der Timer ist pausiert!"));
                 return;
             }
             if(state == State.RUNNING) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§6§l" + getFormattedTime(getTime())));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + getFormattedTime(getTime())));
                 return;
             }
         }

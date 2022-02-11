@@ -1,6 +1,7 @@
 package com.prixix.mathechallenge.listeners;
 
 import com.prixix.mathechallenge.MatheChallenge;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +19,7 @@ public class PlayerLeaveListener implements Listener {
     public void onPlayerLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        event.setQuitMessage(MatheChallenge.PREFIX + "§a" + player.getName() + " §7hat das Spiel verlassen.");
+        event.setQuitMessage(MatheChallenge.PREFIX + ChatColor.GREEN + player.getName() + ChatColor.GRAY + " hat das Spiel verlassen.");
         plugin.getPlayers().remove(player);
 
     }
