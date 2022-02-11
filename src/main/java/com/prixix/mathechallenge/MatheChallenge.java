@@ -92,14 +92,7 @@ public final class MatheChallenge extends JavaPlugin {
     }
 
     public void runChallenge() {
-        console.sendMessage("Starte Challenge...");
-        console.sendMessage(players.toString());
-
-        // Generate a random long between 30 and 300 seconds
-        //300
-        long randomTime = new Random().nextInt(60 - 30 + 1) + 30;
-
-        console.sendMessage("Random Long: " + randomTime);
+        long randomTime = new Random().nextInt(300 - 30 + 1) + 30;
 
         currentTask = Bukkit.getScheduler().runTaskLater(this, () -> {
             if (timer.getState() == Timer.State.RUNNING && getPlayers().size() > 0) {
