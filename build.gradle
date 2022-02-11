@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.prixix'
-version = '1.0-SNAPSHOT'
+version = '1.0-STABLE'
 
 repositories {
     mavenCentral()
