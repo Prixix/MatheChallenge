@@ -22,26 +22,19 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Getter
 public final class MatheChallenge extends JavaPlugin {
 
-    @Getter
     private static MatheChallenge instance;
-    @Getter
     private Timer timer;
-    @Getter
     private ArrayList<Player> players;
-    @Getter
     private ConsoleCommandSender console;
-    @Getter @Setter
+    @Setter
     private Player currentPlayer;
-    @Getter @Setter
+    @Setter
     private Problem currentProblem;
-    @Getter
     private int currentTaskId;
-    @Getter
     private BukkitTask currentTask;
 
     private PluginManager pluginManager;
@@ -133,5 +126,9 @@ public final class MatheChallenge extends JavaPlugin {
             seconds--;
         }, 0L, 20L);
         seconds = 10;
+    }
+
+    public static MatheChallenge getInstance() {
+        return instance;
     }
 }
